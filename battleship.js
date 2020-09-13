@@ -7,9 +7,15 @@ class Board
         this.width;
         this.board;
         this.totalShips;
+        this.turn;
+        this.hitX;
+        this.hitY;
         
     }
     initboard(){
+        this.hitX = -1;
+        this.hitY = -1;
+        this.turn = false;
         this.height = 9;
         this.width = 9;
         this.board = []
@@ -22,8 +28,28 @@ class Board
 		}
     }
 
+    setHitX(x){
+        this.hitX = parseInt(x);
+    }
+
+    setHitY(y){
+        this.hitY = parseInt(y);
+    }
+
     addShip(x,y){
-        this.board[x][y] = 1
+        this.board[x][y] = 1;
+    }
+
+    checkBoard(x,y){
+        if(this.board[x][y] == 1){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    shipHit(x,y){
+        this.board[x][y] = 2; 
     }
 }
 
@@ -38,13 +64,13 @@ class Ships{
 
     // Do Limit check on x,y so that theya re within the board
     setX(x){
-        this.xCoord = parseInt(x) -1;
+        this.xCoord = parseInt(x);
        
     }
     
     setY(y){
         
-        this.yCoord = parseInt(y) - 1;
+        this.yCoord = parseInt(y);
     }
 
 
@@ -53,7 +79,7 @@ class Ships{
         this.size = parseInt(s);
     }
 
-    // Correct Orientaion
+    // Correct Orientaion, store in upper case
     setOrientation(o){
         this.orien = o;
     }
@@ -63,6 +89,22 @@ class Ships{
         if (this.size == 1){
             player.addShip(this.xCoord,this.yCoord);
         }
+        else {
+            if(this.orien == "H"){
+                    for(let i = 0; i < this.size; i++)
+                {
+                    player.addShip(this.xCoord,this.yCoord+i);
+                }
+            }
+            else if (this.orien == "V"){
+                for(let i = 0; i < this.size; i++)
+                {
+                    player.addShip(this.xCoord + i,this.yCoord);
+                }
+            }
+        
+        }
+        
     }
     
     // }
@@ -92,24 +134,20 @@ p1S3.setShipSize(3);
 p1S4.setShipSize(4);
 p1S5.setShipSize(5);
 
+let p2S1 = new Ships();
+let p2S2 = new Ships();
+let p2S3 = new Ships();
+let p2S4 = new Ships();
+let p2S5 = new Ships();
+
+p2S1.setShipSize(1);
+p2S2.setShipSize(2);
+p2S3.setShipSize(3);
+p2S4.setShipSize(4);
+p2S5.setShipSize(5);
 
 
-// p1Ship1.setShipSize(window.prompt("size of your ship? "));
-// alert("ship size " + p1Ship1.size);
-
-
-// p1Ship1.setX(window.prompt("Enter starting ship Xcoords: "));
-// alert("starting ship Xcoordinate " + p1Ship1.xCoord);
-
-// p1Ship1.setY(window.prompt("Enter starting ship Ycoords: "));
-// alert("starting ship Ycoordinate " + p1Ship1.yCoord);
-
-// p1Ship1.setOrientation(window.prompt("(V/H): "));
-// alert("Orentation " + p1Ship1.orien);
-
-// p1Ship1.setShip(p1);
-
-function prettyPrint(player){
+function prettyPrint(player,t){
     printThis = ""
     for(var i = 0; i < player.height; i++){
         for(var j = 0; j < player.width; j++){
@@ -117,17 +155,19 @@ function prettyPrint(player){
         }
         printThis += "<br>";
     }
-    return printThis;
+    document.getElementById(t).innerHTML = printThis;
 }
 
-document.getElementById('p1div').innerHTML = prettyPrint(p1);
-document.getElementById('p2div').innerHTML = prettyPrint(p2);
+// document.getElementById('p1div').innerHTML = prettyPrint(p1);
+// document.getElementById('p2div').innerHTML = prettyPrint(p2);
 
+prettyPrint(p1,"p1div");
+prettyPrint(p2,"p2div");
 
 
 function formUpdate(){
     p1S1.setX(document.getElementById('S1X').value);
-    //document.getElementById('S1X').disabled = true;
+    document.getElementById('S1X').disabled = true;
     p1S1.setY(document.getElementById('S1Y').value);
     p1S1.setOrientation(document.getElementById('S1Orien').value);
     
@@ -149,13 +189,167 @@ function formUpdate(){
 
 }
 
+function formUpdate1(){
+    p2S1.setX(document.getElementById('2S1X').value);
+    //document.getElementById('2S1X').disabled = true;
+    p2S1.setY(document.getElementById('2S1Y').value);
+    p2S1.setOrientation(document.getElementById('2S1Orien').value);
+    
+    p2S2.setX(document.getElementById('2S2X').value);
+    p2S2.setY(document.getElementById('2S2Y').value);
+    p2S2.setOrientation(document.getElementById('2S2Orien').value);
+
+    p2S3.setX(document.getElementById('2S3X').value);
+    p2S3.setY(document.getElementById('2S3Y').value);
+    p2S3.setOrientation(document.getElementById('2S3Orien').value);
+
+    p2S4.setX(document.getElementById('2S4X').value);
+    p2S4.setY(document.getElementById('2S4Y').value);
+    p2S4.setOrientation(document.getElementById('2S4Orien').value);
+
+    p2S5.setX(document.getElementById('2S5X').value);
+    p2S5.setY(document.getElementById('2S5Y').value);
+    p2S5.setOrientation(document.getElementById('2S5Orien').value);
+
+}
 
 function setShipsP1(){
-    alert("Setting ships" + p1S1.yCoord);
+    // alert("Setting ships" + p1S1.yCoord);
+    // console.log(p1S1.xCoord,p1S1.yCoord);
+    // console.log(p1S2.xCoord,p1S2.yCoord);
+    // console.log(p1S3.xCoord,p1S3.yCoord);
+    // console.log(p1S4.xCoord,p1S4.yCoord);
+    // console.log(p1S5.xCoord,p1S5.yCoord);
+    
     p1S1.setShip(p1);
-    document.getElementById('p1div').innerHTML = prettyPrint(p1);
+    p1S2.setShip(p1);
+    p1S3.setShip(p1);
+    p1S4.setShip(p1);
+    p1S5.setShip(p1);
+    
+    // document.getElementById('p1div').innerHTML = prettyPrint(p1);
+    prettyPrint(p1,"p1div");
+    document.getElementById('p1data').hidden = true;
 // document.getElementById('p2div').innerHTML = prettyPrint(p2);
 }
+function setShipsP2(){
+    // alert("Setting ships" + p1S1.yCoord);
+    // console.log(p1S1.xCoord,p1S1.yCoord);
+    // console.log(p1S2.xCoord,p1S2.yCoord);
+    // console.log(p1S3.xCoord,p1S3.yCoord);
+    // console.log(p1S4.xCoord,p1S4.yCoord);
+    // console.log(p1S5.xCoord,p1S5.yCoord);
+    
+    p2S1.setShip(p2);
+    p2S2.setShip(p2);
+    p2S3.setShip(p2);
+    p2S4.setShip(p2);
+    p2S5.setShip(p2);
+    
+    // document.getElementById('p1div').innerHTML = prettyPrint(p1);
+// document.getElementById('p2div').innerHTML = prettyPrint(p2);
+prettyPrint(p2,"p2div");
+document.getElementById('p2data').hidden = true;
+
+document.getElementById('pturn').innerHTML = "Player 1 turn";
+
+// setInterval(preGameCheck(),5000);
+}
+
+function sleep(milliseconds) {
+    const date = Date.now();
+    let currentDate = null;
+    do {
+      currentDate = Date.now();
+    } while (currentDate - date < milliseconds);
+  }
+
+function preGameCheck(){
+    console.log("entering pre game check.");
+    
+    // document.getElementById('p2data').hidden = true;
+    console.log("Divs hidden");
+    p1.turn = true;
+    // setInterval(runner(),5000);
+    // sleep(10000);
+    console.log("Pre Game check complete, starting Game!");
+    // runner();
+
+}
+
+function getHit(){
+    if(p1.turn){
+        p1.setHitX(document.getElementById('hitX').value);
+    //document.getElementById('2S1X').disabled = true;
+        p1.setHitY(document.getElementById('hitY').value);
+
+        // console.log(p1.hitX);
+        // console.log(p1.hitY);
+    }
+    else{
+        p2.setHitX(document.getElementById('hitX').value);
+    //document.getElementById('2S1X').disabled = true;
+        p2.setHitY(document.getElementById('hitY').value);
+        // console.log(p2.hitX);
+        // console.log(p2.hitY);
+    }
+    
+}
+
+function hitShip(){
+    if(p1.turn){
+        if(p2.checkBoard(p1.hitX,p1.hitY)){
+            console.log("Ship hit");
+            p2.shipHit(p1.hitX,p1.hitY);
+        }else{
+            console.log("Better luck next chance!");
+        }
+        prettyPrint(p1,"p1div");
+        p1.turn = false;
+        p2.turn = true;
+
+        document.getElementById('pturn').innerHTML = "Player 1 turn";
+
+    }else{
+        if(p1.checkBoard(p2.hitX,p2.hitY)){
+            console.log("Ship hit");
+            p1.shipHit(p2.hitX,p2.hitY);
+        }else{
+            console.log("Better luck next chance!");
+        }
+        prettyPrint(p2,"p2div");
+        p1.turn = true;
+        p2.turn = false;
+
+        document.getElementById('pturn').innerHTML = "Player 2 turn";
+
+    }
+    document.getElementById('hitX').value = "";
+    document.getElementById('hitY').value = "";
+}
+
+function runner()
+{
+    if(p1.turn){
+        // player 1 plays
+        // sleep(200)
+        // p1.setHitX(window.prompt("Player 1: Enter X coordinate to Hit: "));
+        // p1.setHitY(window.prompt("Player 1: Enter Y coordinate to Hit: "));
+        // Work with the provided Coordinates.
+        
+    }else if(p2.turn){
+        // player 2 plays
+        prettyPrint(p2,"p2div");
+        p2.setHitX(window.prompt("Player 2: Enter X coordinate to Hit: "));
+        p2.setHitY(window.prompt("Player 2: Enter Y coordinate to Hit: "));
+        // Work with the provided Coordinates.
+
+        
+        
+    }
+    runner();
+}
+
 
 // document.getElementById('p1data').hidden = true;
 
