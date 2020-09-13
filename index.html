@@ -2,9 +2,34 @@
         
     <body>
         <div>
-            <p id="flags"></p>
+            <p id="p1div">p1</p>
+            <p id="p2div">p2</p>
             <script type="text/javascript" src ="battleship.js"> </script>
-            <input type='button' value='Restart' onclick='RestartGame()'style="height:30px;width:60px;"/>
+            
+            <p id="p1data">
+            X Coordinate for Ship 1: <input type="text" id="S1X" name="Ship1X" onchange="formUpdate()"/>
+            Y Coordinate for Ship 1: <input type="text" id="S1Y" name="fname"/>
+            Orientation for Ship 1: <input type="text" id="S1Orien" name="fname"/> <br>
+
+            X Coordinate for Ship 2: <input type="text" id="S2X" name="Ship1X" onchange="formUpdate()"/>
+            Y Coordinate for Ship 2: <input type="text" id="S2Y" name="fname"/>
+            Orientation for Ship 2: <input type="text" id="S2Orien" name="fname"/> <br>
+
+            X Coordinate for Ship 3: <input type="text" id="S3X" name="Ship1X" onchange="formUpdate()"/>
+            Y Coordinate for Ship 3: <input type="text" id="S3Y" name="fname"/>
+            Orientation for Ship 3: <input type="text" id="S3Orien" name="fname"/> <br>
+
+            X Coordinate for Ship 4: <input type="text" id="S4X" name="Ship1X" onchange="formUpdate()"/>
+            Y Coordinate for Ship 4: <input type="text" id="S4Y" name="fname"/>
+            Orientation for Ship 4: <input type="text" id="S4Orien" name="fname"/> <br>
+
+            X Coordinate for Ship 5: <input type="text" id="S5X" name="Ship1X" onchange="formUpdate()"/>
+            Y Coordinate for Ship 5: <input type="text" id="S5Y" name="fname"/>
+            Orientation for Ship 5: <input type="text" id="S5Orien" name="fname"/> <br>
+
+            <input type="submit" value="Submit" onclick="setShipsP1()"/>
+            </p>
+
         </div>
     </body>
 </html>
