@@ -18,7 +18,7 @@ class Board
         this.turn = false;
         this.height = 9;
         this.width = 9;
-        this.board = []
+        this.board = [];
         for (let i=0;i<9;i++){
 			this.board[i] = [];
 			for (let j = 0;j<9;j++){
@@ -28,16 +28,54 @@ class Board
 		}
     }
 
+    checkCoord(x,y=0,t=0){
+        if(t==0){
+            console.log("Checking only 1 coord");
+            if(!(x < this.height && x < this.width)){
+                return false;
+            }
+        }else{
+            console.log("Checking 2 coords");
+        // Check within board, return false if not
+            if(!((x < this.height && x < this.width) && (y < this.height && y < this.width))){
+                console.log("NOT WITHIN THE BOARD");
+                return false;
+            }
+            // If its within the board, ship exists? return false if 1 
+            if(this.board[x][y] == 1 ){
+                console.log("SHIP EXISTS");
+                return false;
+            }
+        }
+        return true;
+    }
+
     setHitX(x){
-        this.hitX = parseInt(x);
+        if(this.checkCoord(x)){
+            this.hitX = parseInt(x);
+        }
+        else{
+            return false;
+        }
+        
     }
 
     setHitY(y){
-        this.hitY = parseInt(y);
+        if(this.checkCoord(y)){
+            this.hitY = parseInt(y);
+        }
+        else{
+            return false;
+        }
+            
     }
 
     addShip(x,y){
-        this.board[x][y] = 1;
+        console.log("ADDING SHIP");
+        if(this.checkCoord(x,y,1)){
+            this.board[x][y] = 1;
+            console.log("done");
+        }
     }
 
     checkBoard(x,y){
@@ -62,8 +100,8 @@ class Ships{
     
     }
 
-    // Do Limit check on x,y so that theya re within the board
     setX(x){
+        // if()
         this.xCoord = parseInt(x);
        
     }
@@ -74,17 +112,14 @@ class Ships{
     }
 
 
-    // Check the allowed size
     setShipSize(s){
         this.size = parseInt(s);
     }
 
-    // Correct Orientaion, store in upper case
     setOrientation(o){
         this.orien = o;
     }
 
-    // Once everything is checked, just set the ship.
     setShip(player){
         if (this.size == 1){
             player.addShip(this.xCoord,this.yCoord);
@@ -106,13 +141,6 @@ class Ships{
         }
         
     }
-    
-    // }
-    // // checks if the ship is destroyed 
-    // isDestroyed(){
-
-    // }
-
 
 }
 
@@ -148,18 +176,21 @@ p2S5.setShipSize(5);
 
 
 function prettyPrint(player,t){
+    console.log("Pretty printing");
     printThis = ""
     for(var i = 0; i < player.height; i++){
+        printThis += " X" + i + " : ";
         for(var j = 0; j < player.width; j++){
-            printThis += player.board[i][j] + " ";   
+            printThis += "&nbsp" + player.board[i][j] + "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp";   
         }
         printThis += "<br>";
     }
+    printThis += "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp";
+    for(var i = 0; i < player.width; i++){
+        printThis += " Y" + i + "&nbsp&nbsp&nbsp"
+    }
     document.getElementById(t).innerHTML = printThis;
 }
-
-// document.getElementById('p1div').innerHTML = prettyPrint(p1);
-// document.getElementById('p2div').innerHTML = prettyPrint(p2);
 
 prettyPrint(p1,"p1div");
 prettyPrint(p2,"p2div");
@@ -191,7 +222,6 @@ function formUpdate(){
 
 function formUpdate1(){
     p2S1.setX(document.getElementById('2S1X').value);
-    //document.getElementById('2S1X').disabled = true;
     p2S1.setY(document.getElementById('2S1Y').value);
     p2S1.setOrientation(document.getElementById('2S1Orien').value);
     
@@ -214,12 +244,8 @@ function formUpdate1(){
 }
 
 function setShipsP1(){
-    // alert("Setting ships" + p1S1.yCoord);
-    // console.log(p1S1.xCoord,p1S1.yCoord);
-    // console.log(p1S2.xCoord,p1S2.yCoord);
-    // console.log(p1S3.xCoord,p1S3.yCoord);
-    // console.log(p1S4.xCoord,p1S4.yCoord);
-    // console.log(p1S5.xCoord,p1S5.yCoord);
+
+    console.log("setting p1");
     
     p1S1.setShip(p1);
     p1S2.setShip(p1);
@@ -227,18 +253,14 @@ function setShipsP1(){
     p1S4.setShip(p1);
     p1S5.setShip(p1);
     
-    // document.getElementById('p1div').innerHTML = prettyPrint(p1);
     prettyPrint(p1,"p1div");
     document.getElementById('p1data').hidden = true;
-// document.getElementById('p2div').innerHTML = prettyPrint(p2);
+    // document.getElementById('p1div').hidden = true;
+    
 }
 function setShipsP2(){
-    // alert("Setting ships" + p1S1.yCoord);
-    // console.log(p1S1.xCoord,p1S1.yCoord);
-    // console.log(p1S2.xCoord,p1S2.yCoord);
-    // console.log(p1S3.xCoord,p1S3.yCoord);
-    // console.log(p1S4.xCoord,p1S4.yCoord);
-    // console.log(p1S5.xCoord,p1S5.yCoord);
+    
+    console.log("setting p2")
     
     p2S1.setShip(p2);
     p2S2.setShip(p2);
@@ -246,58 +268,33 @@ function setShipsP2(){
     p2S4.setShip(p2);
     p2S5.setShip(p2);
     
-    // document.getElementById('p1div').innerHTML = prettyPrint(p1);
-// document.getElementById('p2div').innerHTML = prettyPrint(p2);
+
 prettyPrint(p2,"p2div");
 document.getElementById('p2data').hidden = true;
+// document.getElementById('p2div').hidden = true;
+
+p1.turn = true;
 
 document.getElementById('pturn').innerHTML = "Player 1 turn";
-
-// setInterval(preGameCheck(),5000);
-}
-
-function sleep(milliseconds) {
-    const date = Date.now();
-    let currentDate = null;
-    do {
-      currentDate = Date.now();
-    } while (currentDate - date < milliseconds);
-  }
-
-function preGameCheck(){
-    console.log("entering pre game check.");
-    
-    // document.getElementById('p2data').hidden = true;
-    console.log("Divs hidden");
-    p1.turn = true;
-    // setInterval(runner(),5000);
-    // sleep(10000);
-    console.log("Pre Game check complete, starting Game!");
-    // runner();
 
 }
 
 function getHit(){
     if(p1.turn){
         p1.setHitX(document.getElementById('hitX').value);
-    //document.getElementById('2S1X').disabled = true;
         p1.setHitY(document.getElementById('hitY').value);
-
-        // console.log(p1.hitX);
-        // console.log(p1.hitY);
     }
     else{
         p2.setHitX(document.getElementById('hitX').value);
-    //document.getElementById('2S1X').disabled = true;
         p2.setHitY(document.getElementById('hitY').value);
-        // console.log(p2.hitX);
-        // console.log(p2.hitY);
+        
     }
     
 }
 
 function hitShip(){
     if(p1.turn){
+        console.log(p1.hitX,p1.hitY);
         if(p2.checkBoard(p1.hitX,p1.hitY)){
             console.log("Ship hit");
             p2.shipHit(p1.hitX,p1.hitY);
@@ -308,9 +305,10 @@ function hitShip(){
         p1.turn = false;
         p2.turn = true;
 
-        document.getElementById('pturn').innerHTML = "Player 1 turn";
+        document.getElementById('pturn').innerHTML = "Player 2 turn";
 
     }else{
+        console.log(p2.hitX,p2.hitY);
         if(p1.checkBoard(p2.hitX,p2.hitY)){
             console.log("Ship hit");
             p1.shipHit(p2.hitX,p2.hitY);
@@ -321,82 +319,11 @@ function hitShip(){
         p1.turn = true;
         p2.turn = false;
 
-        document.getElementById('pturn').innerHTML = "Player 2 turn";
+        document.getElementById('pturn').innerHTML = "Player 1 turn";
 
     }
     document.getElementById('hitX').value = "";
     document.getElementById('hitY').value = "";
 }
-
-function runner()
-{
-    if(p1.turn){
-        // player 1 plays
-        // sleep(200)
-        // p1.setHitX(window.prompt("Player 1: Enter X coordinate to Hit: "));
-        // p1.setHitY(window.prompt("Player 1: Enter Y coordinate to Hit: "));
-        // Work with the provided Coordinates.
-        
-    }else if(p2.turn){
-        // player 2 plays
-        prettyPrint(p2,"p2div");
-        p2.setHitX(window.prompt("Player 2: Enter X coordinate to Hit: "));
-        p2.setHitY(window.prompt("Player 2: Enter Y coordinate to Hit: "));
-        // Work with the provided Coordinates.
-
-        
-        
-    }
-    runner();
-}
-
-
-// document.getElementById('p1data').hidden = true;
-
-
-// class UI {
-
-//     constructor(){
-
-//     }
-
-//     init(){
-
-
-//     }
-
-//     /* 
-//         places ships on the grid. 
-//         para - coordinates of the ship (or we can pass an array containing the coordinated for all the ship for 1 player.)
-//     */
-//     function placeShips(x,y,s,o){
-    
-//     }
-
-//     /* checks for click and on click if the tile clicked was a ship or part of ship. If yes change the 1 on the grid to 2. 
-//     checks if ship is 
-//     x y passed are the coordinates of the tile clicked 
-//     */
-//     clickCheck(x,y){
-
-//     }
-
-//     // checks if all the ships are destroyed
-//     checkForWin(){
-
-//     }
-// }
-
-// class Graphic {
-
-// }
-
-// function main(){
-//     alert("Welcome to the Battleship game");
-//     var p1ShipSize = window.prompt("size of your? ");
-//     alert("ship size" + p1ShipSize);
-
-
-// }
 
 
