@@ -70,10 +70,10 @@ class Board
             
     }
 
-    addShip(x,y){
+    addShip(x,y,t){
         console.log("ADDING SHIP");
         if(this.checkCoord(x,y,1)){
-            this.board[x][y] = 1;
+            this.board[x][y] = t;
             console.log("done");
         }
     }
@@ -97,9 +97,10 @@ class Ships{
         this.yCoord;
         this.size;
         this.orien;
+        this.type;
     
     }
-
+    
     setX(x){
         // if()
         this.xCoord = parseInt(x);
@@ -114,27 +115,28 @@ class Ships{
 
     setShipSize(s){
         this.size = parseInt(s);
+        this.type = parseInt(s);
     }
 
     setOrientation(o){
-        this.orien = o;
+        this.orien = o.toUpperCase();
     }
 
     setShip(player){
         if (this.size == 1){
-            player.addShip(this.xCoord,this.yCoord);
+            player.addShip(this.xCoord,this.yCoord,this.type);
         }
         else {
             if(this.orien == "H"){
                     for(let i = 0; i < this.size; i++)
                 {
-                    player.addShip(this.xCoord,this.yCoord+i);
+                    player.addShip(this.xCoord,this.yCoord+i,this.type);
                 }
             }
             else if (this.orien == "V"){
                 for(let i = 0; i < this.size; i++)
                 {
-                    player.addShip(this.xCoord + i,this.yCoord);
+                    player.addShip(this.xCoord + i,this.yCoord,this.type);
                 }
             }
         
@@ -325,5 +327,6 @@ function hitShip(){
     document.getElementById('hitX').value = "";
     document.getElementById('hitY').value = "";
 }
+
 
 
