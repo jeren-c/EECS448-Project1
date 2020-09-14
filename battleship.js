@@ -1,5 +1,14 @@
-//var canvas = document.getElementById("canvas");
-//var c = canvas.getContext("2d");
+/**
+ * @classdesc Game board is initialized with given height, width, totalShips
+ * @constructor 
+ *  {Number} - height - The height of the board 
+ *  {Number}  - width - The width of the board
+ *  {Number}  - totalShips - the total number of ships 
+ *  {Array,<Number>}  - board - 2D array 
+ *  {Number} - hitX - The coordinate X to hit
+ *  {Number} - hitY - The coordinate Y to hit 
+ *  {Boolean} - turn - Boolean to store who's turn it is
+ */
 class Board
 {
     constuctor() {
@@ -27,6 +36,12 @@ class Board
 			}
 		}
     }
+/**
+ * checks if the input coordinates are within the range 
+ * @param {Number} - x - X coordinate 
+ * @param {Number} - y - Y coordinate 
+ * @param {Number} - t - type  
+ */
 
     checkCoord(x,y=0,t=0){
         if(t==0){
@@ -49,7 +64,10 @@ class Board
         }
         return true;
     }
-
+/**
+ * sets the hit x coordinate 
+ * @param {Number} - x - The X coordinate to hit  
+ */
     setHitX(x){
         if(this.checkCoord(x)){
             this.hitX = parseInt(x);
@@ -59,7 +77,10 @@ class Board
         }
         
     }
-
+/**
+* sets the hit  y coordinate  
+* @param {Number} - x - The Y coordinate to hit  
+*/
     setHitY(y){
         if(this.checkCoord(y)){
             this.hitY = parseInt(y);
@@ -69,6 +90,12 @@ class Board
         }
             
     }
+/**
+ * adds ship to the grid 
+ * @param {Number} x - x coordinate of the borad
+ * @param {Number} y - y coordinate of the board
+ * @param {Number} t - type of the ship
+ */
 
     addShip(x,y,t){
         console.log("ADDING SHIP");
@@ -77,6 +104,11 @@ class Board
             console.log("done");
         }
     }
+/**
+ * checks the board for placed ships 
+ * @param {Number} - x - The X coordinate of the board
+ * @param {Number} - y - The Y coordinate of the board 
+ */
 
     checkBoard(x,y){
         if(this.board[x][y] == 1){
@@ -85,11 +117,19 @@ class Board
             return false;
         }
     }
-
+/**
+ * if the ship is hit change the grid position to 9 
+ * @param {Number}-  x - X coordinate of the board
+ * @param {Number}- y - Y coordinate of the board  
+ */
     shipHit(x,y){
-        this.board[x][y] = 2; 
+        this.board[x][y] = 9; 
     }
 }
+
+/**
+ * @classdesc  initialises the ship with the given x and y coordinates, the size of the ship, orientation and the type
+ */
 
 class Ships{
     constructor() {
@@ -100,28 +140,45 @@ class Ships{
         this.type;
     
     }
+/**
+ * Sets the X coordinate of the ship 
+ * @param {Number} - x - the X coordinate of the ship   
+ */
     
     setX(x){
-        // if()
+        
         this.xCoord = parseInt(x);
        
     }
+/**
+ * Sets the Y coordinate of the ship 
+ * @param {Number} - y - the Y coordinate of the ship  
+ */
     
     setY(y){
         
         this.yCoord = parseInt(y);
     }
 
-
+/**
+ * Sets the ship size and type 
+ * @param {Number} -  s - the given of the ship  
+ */
     setShipSize(s){
         this.size = parseInt(s);
         this.type = parseInt(s);
     }
-
+/**
+ * Sets the orientation of the ship 
+ * @param {String} - o - the orientation of the given ship (V/H) 
+ */
     setOrientation(o){
         this.orien = o.toUpperCase();
     }
-
+/**
+ * Sets the ship to the player
+ * @param {Object} - player - the player object the instance of the board class  
+ */
     setShip(player){
         if (this.size == 1){
             player.addShip(this.xCoord,this.yCoord,this.type);
@@ -145,6 +202,7 @@ class Ships{
     }
 
 }
+
 
 let p1 = new Board();
 let p2 = new Board();
@@ -176,7 +234,11 @@ p2S3.setShipSize(3);
 p2S4.setShipSize(4);
 p2S5.setShipSize(5);
 
-
+/**
+ * Print function 
+ * @param {Object}  - player - player object is the instance of board class 
+ * @param {Number} - t - the type of the ship 
+ */
 function prettyPrint(player,t){
     console.log("Pretty printing");
     printThis = ""
@@ -197,7 +259,9 @@ function prettyPrint(player,t){
 prettyPrint(p1,"p1div");
 prettyPrint(p2,"p2div");
 
-
+/**
+ * The function sets the different variables available to the board class after taking inputs for player 1
+ */
 function formUpdate(){
     p1S1.setX(document.getElementById('S1X').value);
     document.getElementById('S1X').disabled = true;
@@ -222,6 +286,11 @@ function formUpdate(){
 
 }
 
+/**
+ * The function sets the different variables available to the board class after taking inputs for player 2
+ * 
+ */
+
 function formUpdate1(){
     p2S1.setX(document.getElementById('2S1X').value);
     p2S1.setY(document.getElementById('2S1Y').value);
@@ -244,6 +313,9 @@ function formUpdate1(){
     p2S5.setOrientation(document.getElementById('2S5Orien').value);
 
 }
+/**
+ * sets ship for player 1 
+ */
 
 function setShipsP1(){
 
@@ -260,6 +332,9 @@ function setShipsP1(){
     // document.getElementById('p1div').hidden = true;
     
 }
+/**
+ * sets the ship for player 2 
+ */
 function setShipsP2(){
     
     console.log("setting p2")
@@ -281,6 +356,9 @@ document.getElementById('pturn').innerHTML = "Player 1 turn";
 
 }
 
+/**
+ * get the hit coordinates and set for each player
+ */
 function getHit(){
     if(p1.turn){
         p1.setHitX(document.getElementById('hitX').value);
@@ -293,6 +371,10 @@ function getHit(){
     }
     
 }
+
+/**
+ * control what happens for after we hit the ship
+ */
 
 function hitShip(){
     if(p1.turn){
